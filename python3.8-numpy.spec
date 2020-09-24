@@ -2,11 +2,13 @@
 %undefine _missing_build_ids_terminate_build
 %define debug_package %{nil}
 
+%define _legacy_common_support 1
+
 %global __requires_exclude ^libgfortran-ed201abd\\.so.*$
 
 Name:           python3.8-numpy
 Version:        1.18.5
-Release:        0.1%{?dist}
+Release:        0.2%{?dist}
 Summary:        A fast multidimensional array facility for Python
 
 # Everything is BSD except for class SafeEval in numpy/lib/utils.py which is Python
@@ -64,6 +66,9 @@ cp -f .local/bin/cython %{buildroot}/usr/bin/cython3.8
 cp -f .local/bin/cythonize %{buildroot}/usr/bin/cythonize3.8
 cp -f .local/bin/f2py3.8 %{buildroot}/usr/bin/
 
+find -depth -type f -writable -name "*.py" -exec sed -iE '1s=^#! */usr/bin/\(python\|env python\)[23]\?=#!/usr/bin/python3.8=' {} +
+
+
 %files 
 /usr/lib64/python3.8/site-packages/numpy/
 /usr/lib64/python3.8/site-packages/numpy.libs/
@@ -79,9 +84,10 @@ cp -f .local/bin/f2py3.8 %{buildroot}/usr/bin/
 /usr/lib64/python3.8/site-packages/__pycache__/cython.cpython-38.opt-1.pyc
 /usr/lib64/python3.8/site-packages/__pycache__/cython.cpython-38.pyc
 /usr/lib64/python3.8/site-packages/attr/
-/usr/lib64/python3.8/site-packages/attrs-19.3.0.dist-info/
+/usr/lib64/python3.8/site-packages/attrs-*.dist-info/
 /usr/lib64/python3.8/site-packages/cython.py
 /usr/lib64/python3.8/site-packages/pyximport/
+/usr/lib64/python3.8/site-packages/cython.pyE
 
 # hypothesis
 /usr/lib/python3.8/site-packages/hypothesis-5.15.1.dist-info/
